@@ -27,20 +27,21 @@ class Board:
         new_grid = []
 
         for row in grid:
-            if row == [0, 0, 0, 0]:
-                new_grid.append(row)
-                continue
-            while row[0] == 0:
-                row.append(row.pop(0))
-            for i in range(0, len(row) - 1):
+            row = [x for x in row if x != 0]
+            
+            i = 0
+            while i < len(row) - 1:
                 if row[i] == row[i + 1]:
                     row[i] *= 2
                     row.pop(i + 1)
-                    row.append(0)
+                i += 1
+            
+            while len(row) < 4:
+                row.append(0)
             
             new_grid.append(row)
 
-        self.grid = new_grid if _grid is not None else self.grid
+        self.grid = new_grid
         
         return new_grid
 
@@ -52,12 +53,16 @@ class Board:
         return self.grid
 
     def _move_up(self):
-        # Logic to move tiles up
-        pass
+        self._rotate_counterclockwise()
+        self._move_left()
+        self._rotate_clockwise()
+        return self.grid
 
     def _move_down(self):
-        # Logic to move tiles down
-        pass
+        self._rotate_clockwise()
+        self._move_left()
+        self._rotate_counterclockwise()
+        return self.grid
     
     def rotate(self, direction: Literal['clockwise', 'counterclockwise']):
         match direction:
@@ -118,13 +123,14 @@ class Board:
 
 if __name__ == '__main__':
     board = Board([
-        [1, 1, 1, 1], 
-        [2, 2, 2, 2], 
-        [3, 3, 3, 3], 
-        [4, 4, 4, 4]])
+        [2, 0, 0, 1], 
+        [2, 0, 1, 2], 
+        [3, 3, 0, 3], 
+        [4, 4, 1, 4]])
 
     print('\n')
     print(board)
     print('\n')
-    board._rotate_counterclockwise()
+    board._move_up()
+    print('\n')
     print(board)
