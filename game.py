@@ -45,7 +45,10 @@ class Board:
             return new_grid
 
     def _move_right(self):
-        pass
+        self.grid = [row[::-1] for row in self.grid]
+        self.grid = self._move_left()
+
+        return self.grid
 
     def _move_up(self):
         # Logic to move tiles up
