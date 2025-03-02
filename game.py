@@ -97,7 +97,7 @@ class Board:
 
     def is_won(self) -> bool:
         for row in self.grid:
-            if 2048 in row:
+            if max(row) >= 2048:
                 return True
         return False
 
@@ -122,15 +122,5 @@ class Board:
         return len(self.grid)
 
 if __name__ == '__main__':
-    board = Board([
-        [2, 0, 0, 1], 
-        [2, 0, 1, 2], 
-        [3, 3, 0, 3], 
-        [4, 4, 1, 4]])
-
-    print('\n')
-    print(board)
-    print('\n')
-    board._move_up()
-    print('\n')
-    print(board)
+    board = Board()
+    
