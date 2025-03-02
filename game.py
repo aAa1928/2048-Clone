@@ -1,10 +1,11 @@
 from pprint import pp
 from random import randint
-from typing import Literal
+from types import NoneType
+from typing import Literal, Union
 
 class Board:
-    def __init__(self):
-        self.grid = [[randint(0, 4) for _ in range(4)] for _ in range(4)]
+    def __init__(self, grid: Union[list[list[int]], NoneType] = None):
+        self.grid = [[0 for _ in range(4)] for _ in range(4)] if grid is None else grid
 
     def pp(self):
         for row in self.grid:
@@ -24,30 +25,33 @@ class Board:
             case 'down':
                 return self._move_down()
 
-    def _move_left(self):
-            new_grid = []
+    def _move_left(self, _grid: list[list[int]] = None):
+        grid = self.grid if _grid is None else _grid
 
-            for row in self.grid:
-                if row == [0, 0, 0, 0]:
-                    new_grid.append(row)
-                    continue
-                while row[0] == 0:
-                    new_grid.append(row.pop(0))
-                for i in range(0, len(row) - 1):
-                    if row[i] == row[i + 1]:
-                        row[i] *= 2
-                        row.pop(i + 1)
-                        row.append(0)
-                
+        new_grid = []
+
+        for row in grid:
+            if row == [0, 0, 0, 0]:
                 new_grid.append(row)
-
-            self.grid = new_grid
+                continue
+            while row[0] == 0:
+                row.append(row.pop(0))
+            for i in range(0, len(row) - 1):
+                if row[i] == row[i + 1]:
+                    row[i] *= 2
+                    row.pop(i + 1)
+                    row.append(0)
             
-            return new_grid
+            new_grid.append(row)
+
+        self.grid = new_grid if _grid is not None else self.grid
+        
+        return new_grid
 
     def _move_right(self):
         self.grid = [row[::-1] for row in self.grid]
         self.grid = self._move_left()
+        self.grid = [row[::-1] for row in self.grid]
 
         return self.grid
 
@@ -58,9 +62,6 @@ class Board:
     def _move_down(self):
         # Logic to move tiles down
         pass
-
-    def _reverse(self):
-        raise NotImplementedError("_reverse method not implemented") # TODO
     
     def rotate(self, direction: Literal['left', 'right']):
         match direction:
@@ -82,4 +83,13 @@ class Board:
         return False
 
 if __name__ == '__main__':
-    pass
+    board = Board([
+        [2, 2, 4, 4], 
+        [0, 2, 4, 0], 
+        [3, 2, 4, 8], 
+        [2, 2, 4, 2]])
+    print('\n')
+    board.pp()
+    print('\n')
+    board._move_right()
+    board.pp()
