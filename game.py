@@ -7,10 +7,6 @@ class Board:
     def __init__(self, grid: Union[list[list[int]], NoneType] = None):
         self.grid = [[0 for _ in range(4)] for _ in range(4)] if grid is None else grid
 
-    def pp(self):
-        for row in self.grid:
-            print(row)
-
     def add_tile(self):
         raise NotImplementedError("add_tile method not implemented") # TODO
     
@@ -63,18 +59,36 @@ class Board:
         # Logic to move tiles down
         pass
     
-    def rotate(self, direction: Literal['left', 'right']):
+    def rotate(self, direction: Literal['clockwise', 'counterclockwise']):
         match direction:
-            case 'left':
-                return self._rotate_left()
-            case 'right':
-                return self._rotate_right()
+            case 'clockwise':
+                return self._rotate_clockwise()
+            case 'counterclockwise':
+                return self._rotate_counterclockwise()
             
-    def _rotate_left(self):
-        raise NotImplementedError("_rotate_left method not implemented") # TODO
+    def _rotate_clockwise(self):
+        new_grid = []
+
+        for col in range(4):
+            new_row = []
+            for row in range(3, -1, -1):
+                new_row.append(self.grid[row][col])
+            new_grid.append(new_row)
+
+        self.grid = new_grid
+        return self.grid
     
-    def _rotate_right(self):
-        raise NotImplementedError("_rotate_right method not implemented")
+    def _rotate_counterclockwise(self):
+        new_grid = []
+
+        for col in range(3, -1, -1):
+            new_row = []
+            for row in range(4):
+                new_row.append(self.grid[row][col])
+            new_grid.append(new_row)
+
+        self.grid = new_grid
+        return self.grid
 
     def is_won(self) -> bool:
         for row in self.grid:
@@ -82,14 +96,35 @@ class Board:
                 return True
         return False
 
+    def __iter__(self):
+        return iter(self.grid)
+
+    def __getitem__(self, index):
+        return self.grid[index]
+
+    def __str__(self):
+        return '\n'.join([' '.join(map(str, row)) for row in self.grid])
+
+    def __repr__(self):
+        return f"Board(grid={self.grid})"
+
+    def __eq__(self, other):
+        if not isinstance(other, Board):
+            return False
+        return self.grid == other.grid
+
+    def __len__(self):
+        return len(self.grid)
+
 if __name__ == '__main__':
     board = Board([
-        [2, 2, 4, 4], 
-        [0, 2, 4, 0], 
-        [3, 2, 4, 8], 
-        [2, 2, 4, 2]])
+        [1, 1, 1, 1], 
+        [2, 2, 2, 2], 
+        [3, 3, 3, 3], 
+        [4, 4, 4, 4]])
+
     print('\n')
-    board.pp()
+    print(board)
     print('\n')
-    board._move_right()
-    board.pp()
+    board._rotate_counterclockwise()
+    print(board)
