@@ -16,22 +16,23 @@ class Board:
     def move(self, direction: Literal['up', 'down', 'left', 'right']):
         match direction:
             case 'left':
-                self._move_left()
+                return self._move_left()
             case 'right':
-                self._move_right()
+                return self._move_right()
             case 'up':
-                self._move_up()
+                return self._move_up()
             case 'down':
-                self._move_down()
+                return self._move_down()
 
     def _move_left(self):
             new_grid = []
 
             for row in self.grid:
                 if row == [0, 0, 0, 0]:
-                    return row
+                    new_grid.append(row)
+                    continue
                 while row[0] == 0:
-                    row.append(row.pop(0))
+                    new_grid.append(row.pop(0))
                 for i in range(0, len(row) - 1):
                     if row[i] == row[i + 1]:
                         row[i] *= 2
@@ -57,6 +58,22 @@ class Board:
     def _move_down(self):
         # Logic to move tiles down
         pass
+
+    def _reverse(self):
+        raise NotImplementedError("_reverse method not implemented") # TODO
+    
+    def rotate(self, direction: Literal['left', 'right']):
+        match direction:
+            case 'left':
+                return self._rotate_left()
+            case 'right':
+                return self._rotate_right()
+            
+    def _rotate_left(self):
+        raise NotImplementedError("_rotate_left method not implemented") # TODO
+    
+    def _rotate_right(self):
+        raise NotImplementedError("_rotate_right method not implemented")
 
     def is_won(self) -> bool:
         for row in self.grid:
