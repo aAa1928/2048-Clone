@@ -101,7 +101,8 @@ h1 {
   padding: 0 20px;
   text-decoration: none;
   color: #f9f6f2;
-  height: 40px;
+  height: auto;
+  min-height: 40px;
   line-height: 42px;
   cursor: pointer;
   display: block;
@@ -109,6 +110,10 @@ h1 {
   border: none;
   font-weight: bold;
   font-size: 18px;
+  min-width: 100px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .game-container {

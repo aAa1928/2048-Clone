@@ -18,8 +18,9 @@ def initialize_session():
         session['score'] = 0
         session['moves'] = 0
         board = Board()  # Create Board instance
-        session['board'] = board.grid  # Store the grid (list) in session
         session.permanent = True
+        session['board'] = board.grid  # Store the grid (list) in session
+
 
 @app.route('/')
 def index():
@@ -28,15 +29,17 @@ def index():
                           board=session['board'], 
                           score=session['score'], 
                           moves=session['moves'], 
-                          game_over=session['game_over'])
+                          game_over=session['game_over'],
+                          best_score = session.get('best_score', 0))
 
-@app.route('/update-board', methods=['POST'])
-def update_board():
-    pass
-
-@app.route('/reset', methods=['POST'])
-def reset_game():
-    pass
+@app.route('/new_game', methods=['POST'])
+def new_game():
+    session['game_over'] = False
+    session['best_score'] = session.get(max(session['score'], session['best_score']))
+    session['score'] = 0
+    session['moves'] = 0
+    session['board'] = Board().grid  # Create a new board
+    return jsonify({'board': session['board'], 'score': session['score'], 'moves': session['moves']})
 
 if __name__ == '__main__':
     app.run(debug=True)
