@@ -1,16 +1,42 @@
 from pprint import pp
-from random import randint
-from types import NoneType
-from typing import Literal, Union
+from random import choice, random
+from typing import Literal, Union, Optional, List
+
+DirectionType = Literal['up', 'down', 'left', 'right']
 
 class Board:
-    def __init__(self, grid: Union[list[list[int]], NoneType] = None):
+    def __init__(self, grid: Optional[List[List[int]]] = None):
+        """Initialize a new game board.
+        
+        Args:
+            grid: Optional 2D list representing initial board state
+        """
         self.grid = [[0 for _ in range(4)] for _ in range(4)] if grid is None else grid
+        if grid is None:
+            for _ in range(2):
+                self.add_tile()
 
-    def add_tile(self):
-        raise NotImplementedError("add_tile method not implemented") # TODO
+    def add_tile(self) -> List[List[int]]:
+        """Add a new tile (2 or 4) to a random empty cell.
+        
+        Returns:
+            The updated grid
+        """
+        empty_cells = [(i, j) for i in range(4) for j in range(4) if self.grid[i][j] == 0]
+        if empty_cells:
+            i, j = choice(empty_cells)
+            self.grid[i][j] = 4 if random() < 0.1 else 2
+        return self.grid
     
-    def move(self, direction: Literal['up', 'down', 'left', 'right']):
+    def move(self, direction: DirectionType) -> List[List[int]]:
+        """Move tiles in the specified direction.
+        
+        Args:
+            direction: One of 'up', 'down', 'left', 'right'
+            
+        Returns:
+            The updated grid
+        """
         match direction:
             case 'left':
                 return self._move_left()
@@ -64,7 +90,7 @@ class Board:
         self._rotate_counterclockwise()
         return self.grid
     
-    def rotate(self, direction: Literal['clockwise', 'counterclockwise']):
+    def _rotate(self, direction: Literal['clockwise', 'counterclockwise']):
         match direction:
             case 'clockwise':
                 return self._rotate_clockwise()
@@ -122,5 +148,4 @@ class Board:
         return len(self.grid)
 
 if __name__ == '__main__':
-    board = Board()
-    
+    pass
