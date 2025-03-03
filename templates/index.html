@@ -1,46 +1,59 @@
+/index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2048</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
   </head>
   <body>
-    <h1>2048</h1>
-    <p>Score</p>
-    <p>Best</p>
-    <p>Play 2048 Game Online</p>
-    <p>Join the numbers and get to the 2048 tile!</p>
-    <p>
-      How to play: Use your arrow keys to move the tiles. When two tiles with
-      the same number touch, they merge into one!
-    </p>
-    <button>New Game</button>
-    <table>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
+    <div class="header">
+      <h1>2048</h1>
+      <div class="score-container">
+        <div class="score-title">SCORE</div>
+        <span>{{ score }}</span>
+      </div>
+      <div class="best-container">
+        <div class="score-title">BEST</div>
+        <span>{{ best_score|default(0) }}</span>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="game-intro">
+        <p>Play 2048 Game Online</p>
+        <p>Join the numbers and get to the 2048 tile!</p>
+        <p>
+          How to play: Use your arrow keys to move the tiles. When two tiles
+          with the same number touch, they merge into one!
+        </p>
+      </div>
+      <button class="restart-button">New Game</button>
+    </div>
+
+    <div class="game-container">
+      <div class="grid-container">
+        <table>
+          {% for row in board %}
+          <tr>
+            {% for cell in row %}
+            <td class="{% if cell != 0 %}tile-{{ cell }}{% endif %}">
+              {% if cell != 0 %}{{ cell }}{% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </table>
+
+        <div class="game-message {% if game_over %}game-over{% endif %}">
+          <p>Game over!</p>
+          <button class="restart-button">Try again</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
