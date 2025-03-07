@@ -24,8 +24,8 @@ def initialize_session():
 
 @app.route('/')
 def index():
-    # Pass current game state to the template
-    print(*[row for row in session['board']], sep='\n')
+    print('index()')
+    update()
     return render_template('index.html', 
                           board=session['board'], 
                           score=session['score'], 
@@ -35,15 +35,19 @@ def index():
 
 @app.route('/update')
 def update():
-    raise NotImplementedError()
+    print('update()')
+    print(*[row for row in session['board']], sep='\n')
 
-@app.route('/move')
-def move():
-   raise NotImplementedError()
+@app.route('/move/<direction>', methods=['POST'])
+def move(direction):
+    print('move()')
+    print(direction)
+    update()
+    return jsonify({'board': session['board']})
 
 @app.route('/new_game', methods=['GET'])
 def new_game():
-    print('New game')
+    print('new_game()')
 
     session['board'] = Board().grid  # Create a new board
 
