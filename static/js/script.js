@@ -8,16 +8,16 @@ function newGame() {
   fetch("/new_game")
     .then((response) => response.json())
     .then((data) => {
-      updateGrid(data.board);
+      updateGrid(data.grid);
       document.querySelector(".game-message").classList.remove("game-over");
     })
     .catch((error) => console.error("Error:", error));
 }
 
-function updateGrid(board) {
+function updateGrid(grid) {
   console.log("updateGrid called");
   const cells = document.querySelectorAll("td");
-  board.flat().forEach((value, index) => {
+  grid.flat().forEach((value, index) => {
     cells[index].textContent = value || "";
     cells[index].className = value ? `tile-${value}` : "";
   });
@@ -35,7 +35,7 @@ function sendMove(direction) {
       return response.json();
     })
     .then((data) => {
-      updateGrid(data.board);
+      updateGrid(data.grid);
       if (data.game_over) {
         document.querySelector(".game-message").classList.add("game-over");
       }

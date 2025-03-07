@@ -11,10 +11,18 @@ class Board:
         Args:
             grid: Optional 2D list representing initial board state
         """
-        self.grid = [[0 for _ in range(4)] for _ in range(4)] if grid is None else grid
+        self._grid = [[0 for _ in range(4)] for _ in range(4)] if grid is None else grid
         if grid is None:
             for _ in range(2):
                 self.add_tile()
+
+    @property
+    def grid(self) -> List[List[int]]:
+        return self._grid
+    
+    @grid.setter
+    def grid(self, value: List[List[int]]):
+        self._grid = value
 
     def add_tile(self) -> List[List[int]]:
         """Add a new tile (2 or 4) to a random empty cell.
