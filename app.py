@@ -52,7 +52,7 @@ def move(direction: str):
     print(direction)
     session['grid'] = board.move(direction)
     print(board)
-    update()
+
     return jsonify({'grid': session['grid']})
 
 @app.route('/new_game', methods=['GET'])
