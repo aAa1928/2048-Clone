@@ -54,6 +54,10 @@ class Board:
                 return self._move_up()
             case 'down':
                 return self._move_down()
+            case _:
+                raise ValueError(f"Invalid direction: {direction}")
+            
+        return self.grid
 
     def _move_left(self, _grid: list[list[int]] = None):
         grid = self.grid if _grid is None else _grid
