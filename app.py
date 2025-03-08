@@ -6,21 +6,27 @@ from flask import Flask, render_template, request, session, jsonify
 from os import environ
 from pprint import pp
 from secrets import token_hex
+from types import NoneType
 
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = environ.get('SECRET_KEY', token_hex(16))
 
+board: Board | NoneType = None
+
 @app.before_request
 def initialize_session():
+    global board
+
     if 'grid' not in session:
         # Initialize a new game
         session['score'] = 0
         session['moves'] = 0
         board = Board()  # Create Board instance
         session.permanent = True
-        session['board'] = board
         session['grid'] = board.grid  # Store the grid (list) in session
+    if board is None:
+        board = Board(session['grid'])
 
 
 @app.route('/')
@@ -37,12 +43,15 @@ def index():
 @app.route('/update')
 def update():
     print('update()')
-    print(*[row for row in session['grid']], sep='\n')
+    print(board)
 
 @app.route('/move/<direction>', methods=['POST'])
-def move(direction):
+def move(direction: str):
     print('move()')
+    print(board)
     print(direction)
+    session['grid'] = board.move(direction)
+    print(board)
     update()
     return jsonify({'grid': session['grid']})
 
@@ -51,9 +60,10 @@ def new_game():
     print('new_game()')
 
     # session['board'] = Board()
-    session['grid'] = Board().grid  # Create a new board
+    session['grid'] = Board().grid
+    board = Board(session['grid'])
 
-    print(*[row for row in session['grid']], sep='\n')
+    print(board)
 
     return jsonify({'grid': session['grid']})
 
