@@ -53,8 +53,6 @@ def move(direction: str):
     session['grid'] = board.move(direction)
     session['moves'] += 1
 
-    board.add_tile()
-
     print(board)
 
     return jsonify({'grid': session['grid']})

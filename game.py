@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pprint import pp
 from random import choice, random
 from typing import Literal, Union, Optional, List
@@ -36,27 +37,33 @@ class Board:
             self.grid[i][j] = 4 if random() < 0.1 else 2
         return self.grid
     
-    def move(self, direction: DirectionType) -> List[List[int]]:
+    def move(self, direction: DirectionType, *, add_tile: bool = True) -> List[List[int]]:
         """Move tiles in the specified direction.
         
         Args:
             direction: One of 'up', 'down', 'left', 'right'
+            add_tile: Whether to add a new tile after the move
             
         Returns:
             The updated grid
         """
+        init_grid = deepcopy(self.grid)
+
         match direction:
             case 'left':
-                return self._move_left()
+                self._move_left()
             case 'right':
-                return self._move_right()
+                self._move_right()
             case 'up':
-                return self._move_up()
+                self._move_up()
             case 'down':
-                return self._move_down()
+                self._move_down()
             case _:
                 raise ValueError(f"Invalid direction: {direction}")
-            
+        
+        if add_tile and init_grid != self.grid:
+            self.add_tile()
+
         return self.grid
 
     def _move_left(self, _grid: list[list[int]] = None):
@@ -94,12 +101,14 @@ class Board:
         self._rotate_counterclockwise()
         self._move_left()
         self._rotate_clockwise()
+
         return self.grid
 
     def _move_down(self):
         self._rotate_clockwise()
         self._move_left()
         self._rotate_counterclockwise()
+
         return self.grid
     
     def _rotate(self, direction: Literal['clockwise', 'counterclockwise']):
@@ -119,6 +128,7 @@ class Board:
             new_grid.append(new_row)
 
         self.grid = new_grid
+
         return self.grid
     
     def _rotate_counterclockwise(self):
@@ -131,6 +141,7 @@ class Board:
             new_grid.append(new_row)
 
         self.grid = new_grid
+
         return self.grid
 
     def is_won(self) -> bool:
