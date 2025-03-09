@@ -47,6 +47,7 @@ def move(direction: str):
     session['grid'] = g.board.move(direction)
     session['moves'] += 1
     print(g.board)
+
     return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over()})
 
 @app.route('/new_game', methods=['GET'])
@@ -55,10 +56,6 @@ def new_game():
     g.board = Board()
     session['grid'] = g.board.grid
     return jsonify({'grid': session['grid']})
-
-@app.route('/game_over', methods=['GET'])
-def game_over():
-    return jsonify({'is_game_over': g.board.is_game_over()})
 
 if __name__ == '__main__':
     app.run(debug=True)
