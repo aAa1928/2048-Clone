@@ -149,6 +149,16 @@ class Board:
             if max(row) >= 2048:
                 return True
         return False
+    
+    def is_game_over(self) -> bool:
+        for row in self.grid:
+            if 0 in row:
+                return False
+        for i in range(4):
+            for j in range(3):
+                if self.grid[i][j] == self.grid[i][j + 1] or self.grid[j][i] == self.grid[j + 1][i]:
+                    return False
+        return True
 
     def __iter__(self):
         return iter(self.grid)
@@ -169,6 +179,7 @@ class Board:
 
     def __len__(self):
         return len(self.grid)
+
 
 if __name__ == '__main__':
     pass

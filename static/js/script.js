@@ -9,7 +9,21 @@ function newGame() {
     .then((response) => response.json())
     .then((data) => {
       updateGrid(data.grid);
-      document.querySelector(".game-message").classList.remove("game-over");
+      document.getElementById("game-over-message").hidden = true;
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+function gameOver() {
+  console.log("gameOver called");
+  fetch("/game_over")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.is_game_over) {
+        console.log("Game Over!");
+      } else {
+        throw new Error("Game is not over yet");
+      }
     })
     .catch((error) => console.error("Error:", error));
 }
