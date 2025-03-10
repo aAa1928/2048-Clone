@@ -263,27 +263,62 @@ td {
   }
 }
 
-/* Game over overlay */
-.game-message {
-  display: none;
+.game-over-overlay {
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
-  background: rgba(238, 228, 218, 0.73);
-  z-index: 100;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.game-message.game-over {
+  width: 100%;
+  height: 100%;
+  background: rgba(238, 228, 218, 0.9);
   display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
 }
 
-.game-message p {
-  font-size: 60px;
-  font-weight: bold;
+.game-over-content {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-20px);
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.game-over-content h2 {
+  font-size: 48px;
+  color: #776e65;
+  margin-bottom: 20px;
+}
+
+.game-over-content p {
+  font-size: 24px;
   margin-bottom: 30px;
+}
+
+.final-score {
+  font-weight: bold;
+  color: #f65e3b;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

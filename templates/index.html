@@ -24,7 +24,7 @@
       </div>
       <div class="best-container">
         <div class="score-title">BEST</div>
-        <span>{{ best_score|default(0) }}</span>
+        <span>{{ best_score }}</span>
       </div>
     </div>
 
@@ -53,10 +53,15 @@
           </tr>
           {% endfor %}
         </table>
-
-        <div id="game-over-message" hidden>
-          <p>Game over!</p>
-          <button class="restart-button">Play again</button>
+        <div class="game-over-overlay" hidden>
+          <div class="game-over-content">
+            <h2>Game Over!</h2>
+            <p>
+              Your Score:
+              <span class="final-score">{{ score }}</span>
+            </p>
+            <button class="restart-button">Try Again</button>
+          </div>
         </div>
       </div>
     </div>

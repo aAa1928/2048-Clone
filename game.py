@@ -146,7 +146,7 @@ class Board:
 
     def is_won(self) -> bool:
         for row in self.grid:
-            if max(row) >= 2048:
+            if max(row) == 2048:
                 return True
         return False
     

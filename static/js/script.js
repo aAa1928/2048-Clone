@@ -3,6 +3,8 @@
 const restartButtons = document.querySelectorAll(".restart-button");
 restartButtons.forEach((button) => button.addEventListener("click", newGame));
 
+const gameOverMessage = document.getElementById("game-over-message");
+const gameOverOverlay = document.querySelector(".game-over-overlay");
 let gameOver = null;
 
 function newGame() {
@@ -11,7 +13,9 @@ function newGame() {
     .then((response) => response.json())
     .then((data) => {
       updateGrid(data.grid);
-      document.getElementById("game-over-message").hidden = true;
+      gameOverOverlay.hidden = true;
+      gameOverOverlay.style.animation = "";
+      gameOver = false;
     })
     .catch((error) => console.error("Error:", error));
 }
@@ -39,11 +43,17 @@ function sendMove(direction) {
     .then((data) => {
       updateGrid(data.grid);
       if (data.game_over) {
-        gameOver = false;
-        document.getElementById("game-over-message").hidden = gameOver;
+        displayGameOverMessage();
       }
     })
     .catch((error) => console.error("Error:", error));
+}
+
+function displayGameOverMessage() {
+  console.log("displayGameOverMessage called");
+  gameOver = true;
+  gameOverOverlay.hidden = false;
+  gameOverOverlay.style.animation = "fadeIn 0.5s ease-in forwards";
 }
 
 document.addEventListener("keydown", (event) => {
