@@ -21,7 +21,7 @@ def initialize_session():
         session.permanent = True
         session['grid'] = g.board.grid
     else:
-        g.board = Board(session['grid'])
+        g.board = Board(session['grid'], score=session['score'])
 
 @app.route('/')
 def index():
@@ -41,18 +41,21 @@ def update():
 
 @app.route('/move/<direction>', methods=['POST'])
 def move(direction: str):
-    print('move()')
+    print(f'move({direction})')
     print(g.board)
-    print(direction)
     session['grid'] = g.board.move(direction)
     session['moves'] += 1
+    session['score'] = g.board.score
+    print(f'Moves: {session["moves"]}, Score: {session["score"]}')
     print(g.board)
 
-    return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over()})
+    return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over(), 'score': session['score'], 'moves': session['moves']})
 
 @app.route('/new_game', methods=['GET'])
 def new_game():
     print('new_game()')
+    session['score'] = 0
+    session['moves'] = 0
     g.board = Board()
     session['grid'] = g.board.grid
     return jsonify({'grid': session['grid']})

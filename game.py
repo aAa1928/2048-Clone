@@ -6,12 +6,14 @@ from typing import Literal, Union, Optional, List
 DirectionType = Literal['up', 'down', 'left', 'right']
 
 class Board:
-    def __init__(self, grid: Optional[List[List[int]]] = None):
+    def __init__(self, grid: Optional[List[List[int]]] = None, *, score: int = 0):
         """Initialize a new game board.
         
         Args:
             grid: Optional 2D list representing initial board state
         """
+        self.score = score
+
         self._grid = [[0 for _ in range(4)] for _ in range(4)] if grid is None else grid
         if grid is None:
             for _ in range(2):
@@ -78,6 +80,7 @@ class Board:
             while i < len(row) - 1:
                 if row[i] == row[i + 1]:
                     row[i] *= 2
+                    self.score += row[i]
                     row.pop(i + 1)
                 i += 1
             
