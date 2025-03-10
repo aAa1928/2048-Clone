@@ -20,11 +20,11 @@
       <h1>2048</h1>
       <div class="score-container">
         <div class="score-title">SCORE</div>
-        <span>{{ score }}</span>
+        <span id="score">{{ score }}</span>
       </div>
       <div class="best-container">
         <div class="score-title">BEST</div>
-        <span>{{ best_score }}</span>
+        <span id="best-score">{{ best_score }}</span>
       </div>
     </div>
 
@@ -58,7 +58,7 @@
             <h2>Game Over!</h2>
             <p>
               Your Score:
-              <span class="final-score">{{ score }}</span>
+              <span id="final-score">{{ score }}</span>
             </p>
             <button class="restart-button">Try Again</button>
           </div>

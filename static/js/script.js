@@ -6,6 +6,8 @@ restartButtons.forEach((button) => button.addEventListener("click", newGame));
 const gameOverMessage = document.getElementById("game-over-message");
 const gameOverOverlay = document.querySelector(".game-over-overlay");
 let gameOver = null;
+let score = null;
+let bestScore = null;
 
 function newGame() {
   console.log("newGame called");
@@ -13,6 +15,7 @@ function newGame() {
     .then((response) => response.json())
     .then((data) => {
       updateGrid(data.grid);
+      updateScore(0);
       gameOverOverlay.hidden = true;
       gameOverOverlay.style.animation = "";
       gameOver = false;
@@ -29,6 +32,19 @@ function updateGrid(grid) {
   });
 }
 
+function updateScore(newScore) {
+  console.log("updateScore called");
+  score = newScore;
+  document.getElementById("score").textContent = score;
+  document.getElementById("final-score").textContent = score;
+}
+
+function updateBestScore(newBestScore) {
+  console.log("updateBestScore called");
+  bestScore = newBestScore;
+  document.getElementById("best-score").textContent = bestScore;
+}
+
 function sendMove(direction) {
   console.log(`sendMove called: ${direction}`);
   fetch(`/move/${direction}`, {
@@ -42,6 +58,9 @@ function sendMove(direction) {
     })
     .then((data) => {
       updateGrid(data.grid);
+      updateScore(data.score);
+      updateBestScore(data.best_score);
+      document.getElementById("score").textContent = score;
       if (data.game_over) {
         displayGameOverMessage();
       }

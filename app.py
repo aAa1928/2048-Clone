@@ -46,10 +46,11 @@ def move(direction: str):
     session['grid'] = g.board.move(direction)
     session['moves'] += 1
     session['score'] = g.board.score
+    session['best_score'] = max(session.get('best_score', 0), session['score'])
     print(f'Moves: {session["moves"]}, Score: {session["score"]}')
     print(g.board)
 
-    return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over(), 'score': session['score'], 'moves': session['moves']})
+    return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over(), 'score': session['score'], 'best_score': session['best_score']})
 
 @app.route('/new_game', methods=['GET'])
 def new_game():
