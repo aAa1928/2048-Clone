@@ -5,6 +5,7 @@ restartButtons.forEach((button) => button.addEventListener("click", newGame));
 
 const gameOverMessage = document.getElementById("game-over-message");
 const gameOverOverlay = document.querySelector(".game-over-overlay");
+const winOverlay = document.querySelector(".win-overlay");
 let gameOver = null;
 let score = null;
 let bestScore = null;
@@ -17,7 +18,9 @@ function newGame() {
       updateGrid(data.grid);
       updateScore(0);
       gameOverOverlay.hidden = true;
+      winOverlay.hidden = true;
       gameOverOverlay.style.animation = "";
+      winOverlay.style.animation = "";
       gameOver = false;
     })
     .catch((error) => console.error("Error:", error));
@@ -61,6 +64,11 @@ function sendMove(direction) {
       updateScore(data.score);
       updateBestScore(data.best_score);
       document.getElementById("score").textContent = score;
+      console.log("win:", data.won);
+      if (data.is_won) {
+        console.log("You won!");
+        displayWinMessage();
+      }
       if (data.game_over) {
         displayGameOverMessage();
       }
@@ -73,6 +81,18 @@ function displayGameOverMessage() {
   gameOver = true;
   gameOverOverlay.hidden = false;
   gameOverOverlay.style.animation = "fadeIn 0.5s ease-in forwards";
+}
+
+function displayWinMessage() {
+  console.log("displayWinMessage called");
+  winOverlay.hidden = false;
+  winOverlay.style.animation = "fadeIn 0.5s ease-in forwards";
+
+  const keepGoingButton = document.querySelector(".keep-going-button");
+  keepGoingButton.addEventListener("click", () => {
+    winOverlay.hidden = true;
+    winOverlay.style.animation = "";
+  });
 }
 
 document.addEventListener("keydown", (event) => {

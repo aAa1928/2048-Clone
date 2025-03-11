@@ -149,7 +149,7 @@ class Board:
 
     def is_won(self) -> bool:
         for row in self.grid:
-            if max(row) == 2048:
+            if max(row) == 64:
                 return True
         return False
     
@@ -162,6 +162,9 @@ class Board:
                 if self.grid[i][j] == self.grid[i][j + 1] or self.grid[j][i] == self.grid[j + 1][i]:
                     return False
         return True
+    
+    def flatten(self) -> List[int]:
+        return [num for row in self.grid for num in row]
 
     def __iter__(self):
         return iter(self.grid)

@@ -63,6 +63,16 @@
             <button class="restart-button">Try Again</button>
           </div>
         </div>
+        <div class="win-overlay" hidden>
+          <div class="win-content">
+            <h2>You Won!</h2>
+            <p>But you can keep going...</p>
+            <div class="win-buttons">
+              <button class="keep-going-button">Keep going</button>
+              <button class="restart-button">Start New Game</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

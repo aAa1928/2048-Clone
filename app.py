@@ -18,6 +18,7 @@ def initialize_session():
         session['score'] = 0
         session['moves'] = 0
         g.board = Board()
+        session['is_won'] = False
         session.permanent = True
         session['grid'] = g.board.grid
     else:
@@ -50,7 +51,16 @@ def move(direction: str):
     print(f'Moves: {session["moves"]}, Score: {session["score"]}')
     print(g.board)
 
-    return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over(), 'score': session['score'], 'best_score': session['best_score']})
+    if g.board.is_won() and (not session['is_won']):
+        session['is_won'] = True
+        print('Game won!')
+        # g.is_won = True
+        session['grid'] = g.board.grid
+        return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over(), 'score': session['score'], 
+                        'best_score': session['best_score'], 'is_won': True})
+
+    return jsonify({'grid': session['grid'], 'game_over': g.board.is_game_over(), 'score': session['score'], 
+                    'best_score': session['best_score'], 'is_won': False})
 
 @app.route('/new_game', methods=['GET'])
 def new_game():
@@ -58,6 +68,7 @@ def new_game():
     session['score'] = 0
     session['moves'] = 0
     g.board = Board()
+    session['is_won'] = False
     session['grid'] = g.board.grid
     return jsonify({'grid': session['grid']})
 
