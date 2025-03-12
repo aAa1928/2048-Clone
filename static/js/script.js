@@ -11,7 +11,6 @@ let score = null;
 let bestScore = null;
 
 function newGame() {
-  console.log("newGame called");
   fetch("/new_game")
     .then((response) => response.json())
     .then((data) => {
@@ -27,7 +26,6 @@ function newGame() {
 }
 
 function updateGrid(grid) {
-  console.log("updateGrid called");
   const cells = document.querySelectorAll("td");
   grid.flat().forEach((value, index) => {
     cells[index].textContent = value || "";
@@ -36,20 +34,17 @@ function updateGrid(grid) {
 }
 
 function updateScore(newScore) {
-  console.log("updateScore called");
   score = newScore;
   document.getElementById("score").textContent = score;
   document.getElementById("final-score").textContent = score;
 }
 
 function updateBestScore(newBestScore) {
-  console.log("updateBestScore called");
   bestScore = newBestScore;
   document.getElementById("best-score").textContent = bestScore;
 }
 
 function sendMove(direction) {
-  console.log(`sendMove called: ${direction}`);
   fetch(`/move/${direction}`, {
     method: "POST",
   })
@@ -64,9 +59,7 @@ function sendMove(direction) {
       updateScore(data.score);
       updateBestScore(data.best_score);
       document.getElementById("score").textContent = score;
-      console.log("win:", data.won);
       if (data.is_won) {
-        console.log("You won!");
         displayWinMessage();
       }
       if (data.game_over) {
@@ -77,14 +70,12 @@ function sendMove(direction) {
 }
 
 function displayGameOverMessage() {
-  console.log("displayGameOverMessage called");
   gameOver = true;
   gameOverOverlay.hidden = false;
   gameOverOverlay.style.animation = "fadeIn 0.5s ease-in forwards";
 }
 
 function displayWinMessage() {
-  console.log("displayWinMessage called");
   winOverlay.hidden = false;
   winOverlay.style.animation = "fadeIn 0.5s ease-in forwards";
 
@@ -103,25 +94,21 @@ document.addEventListener("keydown", (event) => {
       case "ArrowUp":
       case "w":
       case "W":
-        console.log("Up arrow pressed");
         sendMove("up");
         break;
       case "ArrowDown":
       case "s":
       case "S":
-        console.log("Down arrow pressed");
         sendMove("down");
         break;
       case "ArrowLeft":
       case "a":
       case "A":
-        console.log("Left arrow pressed");
         sendMove("left");
         break;
       case "ArrowRight":
       case "d":
       case "D":
-        console.log("Right arrow pressed");
         sendMove("right");
         break;
     }
