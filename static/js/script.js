@@ -45,6 +45,8 @@ function updateBestScore(newBestScore) {
 }
 
 function sendMove(direction) {
+  console.log(winOverlay.hidden);
+
   fetch(`/move/${direction}`, {
     method: "POST",
   })

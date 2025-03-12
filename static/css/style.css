@@ -386,3 +386,15 @@ td {
   font-weight: bold;
   font-size: 18px;
 }
+
+/* Add these rules to the end of your CSS file */
+.game-over-overlay[hidden],
+.win-overlay[hidden] {
+  display: none !important;
+  pointer-events: none;
+}
+
+.game-over-overlay:not([hidden]),
+.win-overlay:not([hidden]) {
+  pointer-events: auto;
+}
